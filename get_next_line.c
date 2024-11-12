@@ -6,7 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 00:05:02 by toto              #+#    #+#             */
-/*   Updated: 2024/11/12 16:03:30 by toto             ###   ########.fr       */
+/*   Updated: 2024/11/12 16:51:20 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,15 @@ char	*get_next_line(int fd)
 {
 	static	char	*stash = "";// memoire reserve
 	char	buffer[BUFFER_SIZE]; // memoire buffer pour read
-	//char	*line;  // memoire pour la ligne en cours
-	char	*temp = "toto";
+	char	*line;  // memoire pour la ligne en cours
 	char	*t;
 	ssize_t b_read;
 	int retour;
-	
+	int i;
+
+	i = 0;
 	retour = 0;
+	line = "";
 	while (retour == 0)
 	{
 		b_read = read(fd, buffer, BUFFER_SIZE - 1);
@@ -101,13 +103,19 @@ char	*get_next_line(int fd)
 			return (NULL);
 		t = ft_strjoin(stash, buffer);
 		stash = t;
-		printf("%s\n", stash);
+		//printf("%s\n", stash);
 		if (ft_strchr(stash, '\n') != NULL)
 			retour = 1;
 	}
+	line = stash;
+	printf("%s\n", line[0]);
+	printf("Stash : %s\n", line);
+	
 	stash = ft_strchr(stash, '\n');
 	stash = ft_strcpy(stash , stash + 1);
-	printf("result :%s\n", stash);
+	
+	printf("Stash : %s\n", stash);
+	//return (line);
 }
 
 int main()
@@ -121,6 +129,7 @@ int main()
 		return (1);
 	}
 	get_next_line(fd);
+	//printf("Line : %s\n", get_next_line(fd));
 	//get_next_line(fd);
 }
 /* if (ft_strchr(stash, '\n') == NULL)
