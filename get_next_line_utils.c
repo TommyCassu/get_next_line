@@ -6,13 +6,7 @@
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 00:58:07 by toto              #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/11/12 00:58:14 by toto             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-=======
-/*   Updated: 2024/11/13 19:03:49 by toto             ###   ########.fr       */
+/*   Updated: 2024/11/14 15:18:01 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +36,7 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (NULL);
 }
->>>>>>> ecafe43 (new push but segment fault)
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;

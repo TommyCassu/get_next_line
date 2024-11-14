@@ -5,121 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: toto <toto@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
-/*   Created: 2024/11/12 00:05:02 by toto              #+#    #+#             */
-/*   Updated: 2024/11/12 16:51:20 by toto             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-
-# define BUFFER_SIZE 6
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-			return ((char *)s);
-		s++;
-	}
-	if ((char)c == '\0')
-		return ((char *)s);
-	return (NULL);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	int		i;
-	int		j;
-	int		size;
-	char	*result;
-
-	i = 0;
-	j = 0;
-	size = ft_strlen(s1) + ft_strlen(s2);
-	result = (char *)malloc(sizeof(char) * (size + 1));
-	if (!result)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-	{
-		result[i] = s2[j];
-		i++;
-		j++;
-	}
-	result[i] = '\0';
-	return (result);
-}
-
-char	*get_next_line(int fd)
-{
-	static	char	*stash = "";// memoire reserve
-	char	buffer[BUFFER_SIZE]; // memoire buffer pour read
-	char	*line;  // memoire pour la ligne en cours
-	char	*t;
-	ssize_t b_read;
-	int retour;
-	int i;
-
-	i = 0;
-	retour = 0;
-	line = "";
-	while (retour == 0)
-	{
-		b_read = read(fd, buffer, BUFFER_SIZE - 1);
-		if (b_read == -1)
-			return (NULL);
-		t = ft_strjoin(stash, buffer);
-		stash = t;
-		//printf("%s\n", stash);
-		if (ft_strchr(stash, '\n') != NULL)
-			retour = 1;
-	}
-	line = stash;
-	printf("%s\n", line[0]);
-	printf("Stash : %s\n", line);
-	
-	stash = ft_strchr(stash, '\n');
-	stash = ft_strcpy(stash , stash + 1);
-	
-	printf("Stash : %s\n", stash);
-	//return (line);
-=======
 /*   Created: 2024/10/13 00:05:02 by toto              #+#    #+#             */
-/*   Updated: 2024/11/13 23:01:15 by toto             ###   ########.fr       */
+/*   Updated: 2024/11/14 15:21:15 by toto             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +23,7 @@ char	*file_read(int fd, char *stash)
 	while (retour != 0)
 	{
 		buffer = malloc(sizeof(char) * (BUFFER_SIZE));
+		//zprintf("alloc BUFFER\n");
 		b_read = read(fd, buffer, BUFFER_SIZE - 1);
 		if (b_read == -1)
 			return NULL;
@@ -143,8 +31,10 @@ char	*file_read(int fd, char *stash)
 		temp = ft_strjoin(stash, buffer);
 		if (ft_strlen(stash) > 0)
 			free(stash);
+		//printf("free previous strjoin\n");
 		stash = temp;
 		free(buffer);
+		//printf("free BUFFER\n");
 		if (ft_strchr(stash, '\n') != NULL || b_read == 0)
             retour = 0;
 	}
@@ -156,7 +46,7 @@ char	*get_line(char *str)
 	int i;
 
 	i = 0;
-	while (str[i] != '\n' || str[i + 1] != '\0')
+	while (str[i] != '\0' && str[i] != '\n')
 		i++;
 	line = (char *)malloc(sizeof(char) * (i + 2));
 	i = 0;
@@ -184,6 +74,7 @@ char	*get_stash(char *str, char *stash)
 	while(stash[i++] != '\0')
 		j++;
 	tempstash = (char *)malloc(sizeof(char) * (j));
+	//printf("alloc tempstash\n");
 	i = ft_strlen(str);
 	j = 0;
 	while (stash[i] != '\0')
@@ -191,6 +82,7 @@ char	*get_stash(char *str, char *stash)
 		tempstash[j++] = stash[i++];
 	}
 	tempstash[j] = '\0';
+	free(stash);
 	return(tempstash);
 }
 char	*get_next_line(int fd)
@@ -199,66 +91,36 @@ char	*get_next_line(int fd)
 	char	*line;
 	char	*temp;
 	// recuperer la ligne
+	printf("%s", stash);
 	temp = file_read(fd, stash);
 	// on assigne la ligne
 	line = get_line(temp);
 	// on separe le surplus de ligne
-	stash = get_stash(line, temp);	
+	stash = get_stash(line, temp);
+	
+	if (ft_strchr(stash, '\0') == stash)
+		printf("fin");
 	return (line);
->>>>>>> ecafe43 (new push but segment fault)
 }
 
 int main()
 {
 	int fd;
-<<<<<<< HEAD
-
-=======
 	char *result;
 	
->>>>>>> ecafe43 (new push but segment fault)
 	fd = open("text.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Erreur lors de l'ouverture du fichier");
 		return (1);
 	}
-<<<<<<< HEAD
-	get_next_line(fd);
-	//printf("Line : %s\n", get_next_line(fd));
-	//get_next_line(fd);
-}
-/* if (ft_strchr(stash, '\n') == NULL)
-			retour = 1;
-			
-			
-			char	buffer[BUFFER_SIZE]; // memoire buffer pour read
-	//char	*line;  // memoire pour la ligne en cours
-	char *temp;
-	ssize_t b_read;
-	int retour;
-
-	retour = 0;
-	while (retour == 0)
-	{
-		b_read = read(fd, buffer, BUFFER_SIZE - 1);
-		if (b_read == -1)
-		{
-			// Erreur de lecture
-			free(stash);
-			return NULL;
-		}
-		ft_strjoin(buffer, stash);
-		printf("%s", buffer);
-	}
-	//printf("%s", stash);*/
-=======
 	result = get_next_line(fd);
 	printf("Ligne 1 :%s", result);
+	free(result);
 	result = get_next_line(fd);
 	printf("Ligne 1 :%s", result);
+	free(result);
 
 	close(fd);
 	return (0);
 }
->>>>>>> ecafe43 (new push but segment fault)

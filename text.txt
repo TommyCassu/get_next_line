@@ -1,7 +1,2 @@
 Bonjour je m'appelle Tommy
 Comment ca va ?
-<<<<<<< HEAD
-Tres bien !
-=======
-Tres bien
->>>>>>> ecafe43 (new push but segment fault)
